@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modern Dashboard</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
     <style>
         @import url(https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap);
         *{margin:0;padding:0;box-sizing:border-box;font-family:'Space Grotesk',sans-serif}
@@ -90,13 +91,45 @@
             backdrop-filter:blur(10px)
         }
 
-        .logo{
-            font-size:1.5rem;
-            font-weight:700;
-            letter-spacing:1px;
-            font-style:italic;
-            text-decoration:none;
-            color:var(--accent)
+        /* Logo Styles */
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            font-family: 'Russo One', sans-serif;
+            text-decoration: none;
+            color: var(--accent);
+            display: inline-block;
+            background: linear-gradient(45deg, #6366f1, #a855f7); /* Gradient effect for 4SH */
+            -webkit-background-clip: text; /* Apply gradient to text */
+            -webkit-text-fill-color: transparent; /* Make the text transparent so that gradient is visible */
+            filter: drop-shadow(0 0 6px rgba(99, 101, 241, 0.45)); /* Glow effect for 4SH */
+        }
+
+        /* Smaller T4SK text with gradient and glow effect */
+        .logo .logo2 {
+            font-family: 'Russo One', sans-serif;
+            font-size: 0.5em; /* Reduce the size of T4SK */
+            vertical-align: -0.1em; /* Slightly raise the text */
+            transform: translateY(-2px); /* Move it upwards slightly */
+            background: linear-gradient(45deg, #a855f7, #6366f1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0;
+            filter: drop-shadow(0 0 4px rgba(168, 85, 247, 0.2)); /* Light glow effect */
+            animation: fadeInGlow 0.8s ease-out forwards 0.3s;
+        }
+
+        /* Keyframe for subtle fade-in and glow effect */
+        @keyframes fadeInGlow {
+            0% {
+                opacity: 0;
+                transform: translateY(-5px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .navbar-menu{
@@ -637,7 +670,9 @@
 
     <nav class="navbar">
         <div class="nav-left">
-            <a href="#" class="logo">4SH</a>
+            <a href="#" class="logo">
+                4SH<span class="logo2">T4SK</span>
+            </a>
         </div>
         <div class="navbar-menu" id="navbarMenu">
             <a href="#"><i class="fas fa-home"></i> Home</a>
