@@ -361,14 +361,10 @@
             -webkit-background-clip:text;
             -webkit-text-fill-color:transparent;
             font-weight:700;
-            opacity:0;
-            transform:translateY(20px);
-            transition:opacity .5s,transform .5s
-        }
-
-        .dynamic-title.visible{
             opacity:1;
-            transform:translateY(0)
+            transform:translateY(0);
+            transition:opacity .5s,transform .5s;
+            will-change:transform,opacity
         }
 
         .stats-container{
@@ -444,8 +440,9 @@
         .scroll-indicator{
             position:fixed;
             bottom:2rem;
-            left:50%;
-            transform:translateX(-50%);
+            left:0;
+            right:0;
+            margin:0 auto;
             color:var(--text-secondary);
             font-size:1.8rem;
             opacity:.7;
@@ -455,7 +452,8 @@
             height:40px;
             display:flex;
             justify-content:center;
-            align-items:center
+            align-items:center;
+            transform:none
         }
 
         @media (max-width:768px){
@@ -484,7 +482,10 @@
             .dynamic-title{
                 font-size:1.4rem;
                 padding:.5rem;
-                margin:0 auto
+                margin:0 auto;
+                opacity:1;
+                transform:none;
+                transition:none
             }
 
             .stats-container{
@@ -576,7 +577,11 @@
             }
 
             .scroll-indicator{
-                bottom:1.5rem
+                bottom:1.5rem;
+                left:0;
+                right:0;
+                margin:0 auto;
+                transform:none
             }
         }
 
@@ -762,21 +767,11 @@
             newTitle.textContent = quotes[currentQuote];
 
             if (window.innerWidth <= 768) {
-                newTitle.classList.add('quote-change-animation');
-            } else {
-                newTitle.style.opacity = '0';
-                newTitle.style.transform = 'translateY(20px)';
+                newTitle.style.opacity = '1';
+                newTitle.style.transform = 'none';
             }
 
             oldTitle.parentNode.appendChild(newTitle);
-
-            if (window.innerWidth > 768) {
-                setTimeout(() => {
-                    newTitle.style.opacity = '1';
-                    newTitle.style.transform = 'translateY(0)';
-                }, 100);
-            }
-
             oldTitle.remove();
             currentQuote = (currentQuote + 1) % quotes.length;
         }
@@ -818,11 +813,9 @@
                     document.getElementById('dashboard').style.display = 'block';
                     document.querySelector('.navbar').style.display = 'flex';
 
-                    const dashboard = document.getElementById('dashboard');
-                    dashboard.style.animation = 'slideIn 0.6s ease-out forwards';
-
                     updateQuote();
                     setInterval(updateQuote, 8000);
+
                     animateNumber(document.getElementById('pendingTasks'), 112);
                     animateNumber(document.getElementById('completedTasks'), 248);
                 } else {
