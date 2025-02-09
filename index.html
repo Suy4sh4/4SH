@@ -439,92 +439,203 @@
             }
         }
         /* Mobile Menu Styles */
-    .mobile-menu {
-        display: none;
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        background: rgba(10, 10, 10, 0.95);
-        backdrop-filter: blur(20px);
-        padding: 1rem;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-        z-index: 1000;
-    }
+            /* New Mobile Menu Styles */
+            .mobile-nav {
+            display: none;
+            position: fixed;
+            top: 0;
+            right: 0;
+            padding: 1rem;
+            z-index: 1001;
+        }
 
-    .mobile-menu-content {
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-    }
+        input[type="checkbox"] {
+            -webkit-appearance: none;
+            display: none;
+            visibility: hidden;
+        }
 
-    .menu-item {
-        color: var(--text-secondary);
-        text-decoration: none;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 0.5rem;
-        font-size: 0.9rem;
-    }
+        .bar {
+            display: block;
+            position: relative;
+            cursor: pointer;
+            width: 50px;
+            height: 40px;
+            z-index: 1002;
+        }
 
-    .menu-item i {
-        font-size: 1.2rem;
-    }
+        .bar span {
+            position: absolute;
+            width: 45px;
+            height: 4px;
+            background: var(--text);
+            border-radius: 100px;
+            display: inline-block;
+            transition: 0.3s ease;
+            left: 0;
+        }
 
-    .menu-item.active {
-        color: var(--accent);
-    }
+        .bar span.top {
+            top: 0;
+        }
 
-    @media (max-width: 768px) {
-        .navbar {
-            display: none !important;
+        .bar span.middle {
+            top: 17px;
+        }
+
+        .bar span.bottom {
+            bottom: 0;
+        }
+
+        #check:checked ~ span.top {
+            transform: rotate(45deg);
+            transform-origin: top left;
+            width: 48px;
+            left: 5px;
+        }
+
+        #check:checked ~ span.bottom {
+            transform: rotate(-45deg);
+            transform-origin: top left;
+            width: 48px;
+            bottom: -1px;
+            box-shadow: 0 0 10px var(--accent);
+        }
+
+        #check:checked ~ span.middle {
+            transform: translateX(-20px);
+            opacity: 0;
         }
 
         .mobile-menu {
-            display: block;
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 80%;
+            height: 100vh;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 6rem 2rem;
+            transition: 0.5s ease;
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .dashboard-content {
-            height: calc(100vh - 120px); /* Account for mobile menu */
-            padding: 1rem;
-            justify-content: flex-start;
-            padding-top: 3rem;
+        #check:checked ~ .mobile-menu {
+            right: 0;
         }
 
-        .quote-section {
-            height: 100px;
-            margin-bottom: 2rem;
-        }
-
-        .dynamic-title {
-            font-size: 1.5rem;
-            padding: 0 1rem;
-            position: relative;
-        }
-
-        .stats-container {
+        .mobile-menu-content {
+            display: flex;
             flex-direction: column;
             gap: 2rem;
-            margin-top: 2rem;
         }
 
-        .separator {
-            width: 80%;
-            height: 2px;
-            margin: 1rem 0;
+        .menu-item {
+            color: var(--text-secondary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.2rem;
+            padding: 1rem;
+            border-radius: 12px;
+            transition: 0.3s ease;
         }
 
-        .stat-box {
-            padding: 2rem;
+        .menu-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--accent);
+        }
+
+        .menu-item.active {
+            color: var(--accent);
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        /* Enhanced Background Effect for Login */
+        .login-bg-effect {
+            position: absolute;
             width: 100%;
-            max-width: none;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
         }
 
-        .scroll-indicator {
-            bottom: 5rem; /* Account for mobile menu */
+        .login-bg-circle {
+            position: absolute;
+            background: var(--accent);
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.1;
+            animation: loginBgFloat 15s infinite ease-in-out;
         }
-    }
+
+        @keyframes loginBgFloat {
+            0%, 100% {
+                transform: translate(0, 0) scale(1);
+            }
+            50% {
+                transform: translate(30px, -30px) scale(1.1);
+            }
+        }
+
+        /* Mobile Optimizations */
+        @media (max-width: 768px) {
+            .mobile-nav {
+                display: block;
+            }
+
+            .dashboard {
+                padding-top: 0;
+            }
+
+            .dashboard-content {
+                height: 100vh;
+                padding: 2rem 1rem;
+                justify-content: center;
+                gap: 3rem;
+            }
+
+            .quote-section {
+                height: auto;
+                min-height: 120px;
+                margin: 0;
+            }
+
+            .dynamic-title {
+                font-size: 1.4rem;
+                position: relative;
+                padding: 0 0.5rem;
+            }
+
+            .stats-container {
+                flex-direction: column;
+                gap: 1.5rem;
+                width: 100%;
+                padding: 0 0.5rem;
+            }
+
+            .stat-box {
+                padding: 2rem;
+                width: 100%;
+                max-width: none;
+            }
+
+            .separator {
+                width: 80%;
+                height: 2px;
+                margin: 0.5rem 0;
+            }
+
+            .scroll-indicator {
+                bottom: 2rem;
+            }
+
+            .login-card {
+                margin: 1rem;
+                padding: 2rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -577,25 +688,40 @@
         </div>
     </div>
 
+   <!-- New Mobile Menu -->
+   <div class="mobile-nav">
+    <label class="bar" for="check">
+        <input type="checkbox" id="check">
+        <span class="top"></span>
+        <span class="middle"></span>
+        <span class="bottom"></span>
+    </label>
     <div class="mobile-menu">
-    <div class="mobile-menu-content">
-        <a href="#" class="menu-item active">
-            <i class="fas fa-home"></i>
-            <span>Home</span>
-        </a>
-        <a href="#" class="menu-item">
-            <i class="fas fa-tasks"></i>
-            <span>Tasks</span>
-        </a>
-        <a href="#" class="menu-item">
-            <i class="fas fa-chart-bar"></i>
-            <span>Stats</span>
-        </a>
-        <a href="#" class="menu-item">
-            <i class="fas fa-user"></i>
-            <span>Profile</span>
-        </a>
+        <div class="mobile-menu-content">
+            <a href="#" class="menu-item active">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="#" class="menu-item">
+                <i class="fas fa-tasks"></i>
+                <span>Tasks</span>
+            </a>
+            <a href="#" class="menu-item">
+                <i class="fas fa-chart-bar"></i>
+                <span>Stats</span>
+            </a>
+            <a href="#" class="menu-item">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+            </a>
+        </div>
     </div>
+</div>
+
+<div class="login-bg-effect">
+    <div class="login-bg-circle" style="width: 400px; height: 400px; top: 20%; left: 10%;"></div>
+    <div class="login-bg-circle" style="width: 300px; height: 300px; bottom: 10%; right: 20%;"></div>
+    <div class="login-bg-circle" style="width: 250px; height: 250px; top: 50%; right: 30%;"></div>
 </div>
 
     <script>
@@ -689,6 +815,24 @@
 
         // Initialize floating circles
         createFloatingCircles();
+
+        // Enhanced floating circles for login background
+        function createLoginBgEffect() {
+            const container = document.querySelector('.login-bg-effect');
+            for (let i = 0; i < 3; i++) {
+                const circle = document.createElement('div');
+                circle.className = 'login-bg-circle';
+                circle.style.width = Math.random() * 300 + 200 + 'px';
+                circle.style.height = circle.style.width;
+                circle.style.left = Math.random() * 100 + '%';
+                circle.style.top = Math.random() * 100 + '%';
+                circle.style.animationDelay = Math.random() * 5 + 's';
+                container.appendChild(circle);
+            }
+        }
+
+        // Initialize login background effect
+        createLoginBgEffect();
     </script>
 </body>
 </html>
