@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        :root {
+            --bg-dark: #0a0a0a;
+            --accent: #6366f1;
+            --accent-dark: #4f46e5;
+            --text: #ffffff;
+            --text-secondary: #94a3b8;
+            --surface: #18181b;
+        }
+
+        body {
+            min-height: 100vh;
+            background: var(--bg-dark);
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .gradient-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .gradient-circle {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: var(--accent);
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.15;
+            transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .floating-circles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .floating-circle {
+            position: absolute;
+            background: var(--accent);
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.1;
+            animation: floatAnimation 20s infinite linear;
+        }
+
+        @keyframes floatAnimation {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+            33% {
+                transform: translate(30px, -50px) scale(1.1);
+            }
+            66% {
+                transform: translate(-20px, 20px) scale(0.9);
+            }
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.5rem 5%;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: none;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+
+        /* Login Page */
+        .login-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: var(--bg-dark);
+            z-index: 100;
+        }
+
+        .login-card {
+            background: rgba(24, 24, 27, 0.9);
+            padding: 3.5rem;
+            border-radius: 28px;
+            width: 90%;
+            max-width: 440px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            animation: cardFloat 0.6s ease-out;
+            transform: translateZ(0);
+        }
+
+        @keyframes cardFloat {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .login-header h2 {
+            font-size: 2.2rem;
+            margin-bottom: 0.8rem;
+            background: linear-gradient(135deg, var(--accent), #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .login-header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .input-group {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 1.2rem 1.5rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            color: var(--text);
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus {
+            border-color: var(--accent);
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .input-group label {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 0 0.5rem;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+            pointer-events: none;
+            font-size: 1.1rem;
+        }
+
+        .input-group input:focus + label,
+        .input-group input:valid + label {
+            top: 0;
+            left: 0.8rem;
+            font-size: 0.9rem;
+            color: var(--accent);
+            background: var(--surface);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 1.2rem;
+            background: var(--accent);
+            border: none;
+            border-radius: 16px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .login-btn:hover::before {
+            left: 100%;
+        }
+
+        .login-btn:hover {
+            background: var(--accent-dark);
+            transform: translateY(-2px);
+        }
+
+        /* Dashboard */
+        .dashboard {
+            display: none;
+            min-height: 100vh;
+            padding-top: 80px;
+        }
+
+        .dashboard-content {
+            height: calc(100vh - 80px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .quote-section {
+            text-align: center;
+            margin-bottom: 4rem;
+            padding: 0 1rem;
+        }
+
+        .dynamic-title {
+            font-size: 2.8rem;
+            font-weight: 700;
+            line-height: 1.4;
+            background: linear-gradient(135deg, #fff 30%, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s forwards;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .stats-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4rem;
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .stat-box {
+            background: rgba(24, 24, 27, 0.9);
+            padding: 3rem;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+            flex: 1;
+            max-width: 300px;
+            text-align: center;
+        }
+
+        .stat-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(
+                circle at top right,
+                rgba(99, 102, 241, 0.1),
+                transparent 70%
+            );
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .stat-box:hover::before {
+            opacity: 1;
+        }
+
+        .stat-box:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-box h3 {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-number {
+            font-size: 4rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent), #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .separator {
+            width: 2px;
+            height: 120px;
+            background: linear-gradient(
+                to bottom,
+                transparent,
+                var(--accent),
+                transparent
+            );
+            border-radius: 2px;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            opacity: 0.7;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .stats-container {
+                flex-direction: column;
+                gap: 2rem;
+            }
+
+            .separator {
+                width: 200px;
+                height: 2px;
+                background: linear-gradient(
+                    to right,
+                    transparent,
+                    var(--accent),
+                    transparent
+                );
+            }
+
+            .dynamic-title {
+                font-size: 2rem;
+            }
+
+            .stat-box {
+                padding: 2rem;
+                width: 100%;
+            }
+
+            .stat-number {
+                font-size: 3rem;
+            }
+
+            .login-card {
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="gradient-bg">
+        <div class="gradient-circle"></div>
+        <div class="floating-circles"></div>
+    </div>
+
+    <nav class="navbar">
+        <a href="#" class="logo">4SH</a>
+    </nav>
+
+    <div class="login-container" id="loginForm">
+        <div class="login-card">
+            <div class="login-header">
+                <h2>Welcome Back</h2>
+                <p>Enter your credentials to continue</p>
+            </div>
+            <div class="input-group">
+                <input type="text" id="userId" required>
+                <label>User ID</label>
+            </div>
+            <div class="input-group">
+                <input type="password" id="password" required>
+                <label>Password</label>
+            </div>
+            <button class="login-btn" onclick="login()">Sign In</button>
+        </div>
+    </div>
+
+    <div class="dashboard" id="dashboard">
+        <div class="dashboard-content">
+            <div class="quote-section">
+                <div class="dynamic-title" id="dynamicTitle"></div>
+            </div>
+            <div class="stats-container">
+                <div class="stat-box">
+                    <h3>Pending Tasks</h3>
+                    <div class="stat-number" id="pendingTasks">0</div>
+                </div>
+                <div class="separator"></div>
+                <div class="stat-box">
+                    <h3>Completed Tasks</h3>
+                    <div class="stat-number" id="completedTasks">0</div>
+                </div>
+            </div>
+            <div class="scroll-indicator">
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create floating background circles
+        function createFloatingCircles() {
+            const container = document.querySelector('.floating-circles');
+            for (let i = 0; i < 5; i++) {
+                const circle = document.createElement('div');
+                circle.className = 'floating-circle';
+                circle.style.width = Math.random() * 200 + 100 + 'px';
+                circle.style.height = circle.style.width;
+                circle.style.left = Math.random() * 100 + '%';
+                circle.style.top = Math.random() * 100 + '%';
+                circle.style.animationDelay = Math.random() * 5 + 's';
+                container.appendChild(circle);
+            }
+        }
+
+        // Mouse follow effect for gradient
+        document.addEventListener('mousemove', (e) => {
+            const circle = document.querySelector('.gradient-circle');
+            const x = e.clientX - 150;
+            const y = e.clientY - 150;
+            circle.style.transform = `translate(${x}px, ${y}px)`;
+        });
+
+        const quotes = [
+            "Discipline can solve 80% of your problems, the rest are just your thinking",
+            "Success is not final, failure is not fatal",
+            "The only way to do great work is to love what you do",
+            "Your future is created by what you do today",
+            "Dream big, work hard, stay focused"
+        ];
+
+        let currentQuote = 0;
+
+        function updateQuote() {
+            const title = document.getElementById('dynamicTitle');
+            title.style.opacity = '0';
+            title.style.transform = 'translateY(20px)';
+
+            setTimeout(() => {
+                title.textContent = quotes[currentQuote];
+                title.style.opacity = '1';
+                title.style.transform = 'translateY(0)';
+                currentQuote = (currentQuote + 1) % quotes.length;
+            }, 800);
+        }
+
+        function animateNumber(element, target) {
+            let current = 0;
+            const duration = 2000;
+            const frames = 60;
+            const increment = target / (duration / (1000 / frames));
+
+            const animation = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(animation);
+                }
+                element.textContent = Math.floor(current);
+            }, 1000 / frames);
+        }
+
+        function login() {
+            const userId = document.getElementById('userId').value;
+            const password = document.getElementById('password').value;
+
+            if (userId === '123' && password === '234') {
+                document.getElementById('loginForm').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+                document.querySelector('.navbar').style.display = 'block';
+
+                updateQuote();
+                setInterval(updateQuote, 8000);
+
+                animateNumber(document.getElementById('pendingTasks'), 12);
+                animateNumber(document.getElementById('completedTasks'), 48);
+            } else {
+                alert('Invalid credentials! Please try again.');
+            }
+        }
+
+        // Initialize floating circles
+        createFloatingCircles();
+    </script>
+</body>
+</html>
