@@ -259,27 +259,30 @@
             justify-content: center;
             align-items: center;
             padding: 2rem;
+            position: relative;
         }
 
         .quote-section {
-            text-align: center;
-            margin-bottom: 4rem;
-            padding: 0 1rem;
-        }
+        text-align: center;
+        margin-bottom: 4rem;
+        padding: 0 1rem;
+        height: 120px; /* Fixed height for quote container */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 
-        .dynamic-title {
-            font-size: 2.8rem;
-            font-weight: 700;
-            line-height: 1.4;
-            background: linear-gradient(135deg, #fff 30%, var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 0.8s forwards;
-            max-width: 900px;
-            margin: 0 auto;
-        }
+    .dynamic-title {
+        font-size: 2.8rem;
+        font-weight: 700;
+        line-height: 1.4;
+        background: linear-gradient(135deg, #fff 30%, var(--accent));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        position: absolute;
+        max-width: 900px;
+        text-align: center;
+    }
 
         .stats-container {
             display: flex;
@@ -344,16 +347,32 @@
         }
 
         .separator {
-            width: 2px;
-            height: 120px;
-            background: linear-gradient(
-                to bottom,
-                transparent,
-                var(--accent),
-                transparent
-            );
-            border-radius: 2px;
+        width: 2px;
+        height: 120px;
+        background: linear-gradient(
+            to bottom,
+            transparent,
+            var(--accent),
+            transparent
+        );
+        border-radius: 2px;
+        animation: glowPulse 3s infinite;
+    }
+
+    @keyframes glowPulse {
+        0% {
+            opacity: 0.3;
+            box-shadow: 0 0 5px var(--accent);
         }
+        50% {
+            opacity: 1;
+            box-shadow: 0 0 20px var(--accent);
+        }
+        100% {
+            opacity: 0.3;
+            box-shadow: 0 0 5px var(--accent);
+        }
+    }
 
         @keyframes fadeInUp {
             to {
@@ -419,6 +438,93 @@
                 padding: 2rem;
             }
         }
+        /* Mobile Menu Styles */
+    .mobile-menu {
+        display: none;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: rgba(10, 10, 10, 0.95);
+        backdrop-filter: blur(20px);
+        padding: 1rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        z-index: 1000;
+    }
+
+    .mobile-menu-content {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
+
+    .menu-item {
+        color: var(--text-secondary);
+        text-decoration: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    .menu-item i {
+        font-size: 1.2rem;
+    }
+
+    .menu-item.active {
+        color: var(--accent);
+    }
+
+    @media (max-width: 768px) {
+        .navbar {
+            display: none !important;
+        }
+
+        .mobile-menu {
+            display: block;
+        }
+
+        .dashboard-content {
+            height: calc(100vh - 120px); /* Account for mobile menu */
+            padding: 1rem;
+            justify-content: flex-start;
+            padding-top: 3rem;
+        }
+
+        .quote-section {
+            height: 100px;
+            margin-bottom: 2rem;
+        }
+
+        .dynamic-title {
+            font-size: 1.5rem;
+            padding: 0 1rem;
+            position: relative;
+        }
+
+        .stats-container {
+            flex-direction: column;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .separator {
+            width: 80%;
+            height: 2px;
+            margin: 1rem 0;
+        }
+
+        .stat-box {
+            padding: 2rem;
+            width: 100%;
+            max-width: none;
+        }
+
+        .scroll-indicator {
+            bottom: 5rem; /* Account for mobile menu */
+        }
+    }
     </style>
 </head>
 <body>
@@ -471,6 +577,27 @@
         </div>
     </div>
 
+    <div class="mobile-menu">
+    <div class="mobile-menu-content">
+        <a href="#" class="menu-item active">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="#" class="menu-item">
+            <i class="fas fa-tasks"></i>
+            <span>Tasks</span>
+        </a>
+        <a href="#" class="menu-item">
+            <i class="fas fa-chart-bar"></i>
+            <span>Stats</span>
+        </a>
+        <a href="#" class="menu-item">
+            <i class="fas fa-user"></i>
+            <span>Profile</span>
+        </a>
+    </div>
+</div>
+
     <script>
         // Create floating background circles
         function createFloatingCircles() {
@@ -506,17 +633,24 @@
         let currentQuote = 0;
 
         function updateQuote() {
-            const title = document.getElementById('dynamicTitle');
-            title.style.opacity = '0';
-            title.style.transform = 'translateY(20px)';
+        const oldTitle = document.getElementById('dynamicTitle');
+        const newTitle = document.createElement('div');
+        newTitle.className = 'dynamic-title';
+        newTitle.id = 'dynamicTitle';
+        newTitle.style.opacity = '0';
+        newTitle.style.transform = 'translateY(20px)';
+        newTitle.textContent = quotes[currentQuote];
 
-            setTimeout(() => {
-                title.textContent = quotes[currentQuote];
-                title.style.opacity = '1';
-                title.style.transform = 'translateY(0)';
-                currentQuote = (currentQuote + 1) % quotes.length;
-            }, 800);
-        }
+        oldTitle.parentNode.appendChild(newTitle);
+
+        setTimeout(() => {
+            newTitle.style.opacity = '1';
+            newTitle.style.transform = 'translateY(0)';
+            oldTitle.remove();
+            currentQuote = (currentQuote + 1) % quotes.length;
+        }, 100);
+    }
+
 
         function animateNumber(element, target) {
             let current = 0;
